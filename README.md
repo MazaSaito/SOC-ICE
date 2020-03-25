@@ -1,2 +1,2 @@
 # SOC-ICE
-Soil organic carbon aand ground ice budget
+Soil organic carbon and ground ice budget
