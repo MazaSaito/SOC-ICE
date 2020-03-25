@@ -1,0 +1,36 @@
+;; SOC-ICE-01 Sample Code
+
+ To prepare and run on linux:
+  1. cp SOC_ICE_sample.tar.gz "the top directory"
+  2. cd "the top directory"
+  3. tar zxvf SOC_ICE_sample.tar
+  4. cd sample
+  5. execute "./run_SOC_ICE_sample.sh"
+
+ to run in IDL, ".run SOC_ICE" at the IDL prompt
+
+ SET UPs (inside the main program)
+  * Need to set 'dir_work0' to "the top directory"
+  * Can change parameters in 'para_file' and 'init_file' files
+       in 'dir_init_para' 
+    'para_file' determines the years (time steps) to read in the forcing (and boundary) data. [cf. l. 87 in the sample code]
+    'init_file' determines the initial and controlling parameters. [cf. l. 171 in the sample code]
+
+Other boundary data files:
+  "lonlat_GT125k.sav" in 'odir_f': londitude, latitude information (1-degree resolution, common to ICE-6G_C).
+  "ratio_GT125k_sample.sav" in 'odir_f': aerial ratio of land, ocean(water), and ice sheet (created from ICE-6G_C).
+  "dist_GT125k_sample.sav" in 'odir_f': distance from the closest ocean (created from ICE-6G_C).
+  "total_area_sample.sav" in 'dir_alt': altitudes (created from ICE-6G_C).
+  "CO2_edc_gtmip_RCP85.sav" in 'dir_CO2': background atmospheric CO2 concentration (taken from GTMIP dataset)
+  "soil_GLDAS_convrt2GT_sample.sav" in 'odir': soil type (created from GLDAX dataset).
+
+Target site specification:
+;; target site(s) is/are specified by name 'p_namels' and
+;; location 'p_lonlatls'  (by longitude and latitude) like below
+;; [cf. ll. 160-163 in the sample code]
+  p_namels = ['Anaktuvuk']
+  p_lonlatls = [ $
+               [-150.86909, 69.27636] $
+               ]
+
+  
