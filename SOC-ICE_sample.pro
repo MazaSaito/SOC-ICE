@@ -293,6 +293,48 @@ pro SOC_ICE
       para_K = missing
     endif
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;restore Ta Pr
+    filename0 = 'odata'
+    filename1 = filename0+un+str_lat+un+str_lon
+    filename = filename1+sav_name
+    fname_TaPr = fdir1 + filename
+    print, 'fname_TaPr=', fname_TaPr
+    if (FILE_TEST(fname_TaPr) eq 0) then begin
+      print, 'file TaPr not found =', fname_TaPr
+      goto, skip_culc
+    endif
+    restore, fname_TaPr
+
+    print, 'restore file hist=', fname_TaPr
+    
+    time_standard = temporary(TIME)
+    time_ice = temporary(TIME_ICE)
+    icethick = temporary(ICETHICK)
+    dmy = temporary(ALT)
+    dmy = temporary(ICECOVER)
+    dmy = temporary(LAND)
+    ta = temporary(TA)
+    pr = temporary(PR)
+    time_TaPr = time_standard
+
+    time_ice = -1.*time_ice
+    no_time_ice = n_elements(time_ice)
+
+    idx_time_ice0 = func_search_before_idx(0, time_TaPr[0], time_ice)
+    idx_restart0 = 0
+    idx_restart1 = n_elements(time_TaPr)-1
+    
+    idx_restart_beg = idx_restart0
+    idx_restart_end = idx_restart1
+    no_time_TaPr = n_elements(time_TaPr[idx_restart_beg:idx_restart_end])
+
+    Ta0 = temporary(ta[idx_restart_beg:idx_restart_end])
+    Pr0 = temporary(pr[idx_restart_beg:idx_restart_end])
+
+    tlen = n_elements(time_ice)
+    dmy = []
+    help, Ta0, Pr0
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;make array
 ;; make array
     time125k = fltarr(no_yr_plus)+missing
@@ -340,6 +382,14 @@ pro SOC_ICE
     rho_s = fltarr(no_yr_plus)+missing
     rho_l = fltarr(no_yr_plus)+missing
     alt = fltarr(no_yr_plus)+missing 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;restore alt
+    filename_alt1 = filename_alt0+un+str_lat+un+str_lon
+    filename = filename_alt1+sav_name
+    print, filename
+    restore, file = filepath(filename, root_dir = dir_alt)
+    altls = temporary(altdiff)
+    help, altls
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;spinup
 ;;make array for spinup
